@@ -29,13 +29,21 @@ int depthfirstapply(char *basePath, int_func_int pathfun)
     {
         if (strcmp(dp->d_name, ".") != 0 && strcmp(dp->d_name, "..") != 0)
         {
+<<<<<<< HEAD
             //printf("\n%-20s\t\t", dp->d_name);            
+=======
+            printf("\n%-20s\t\t", dp->d_name);            
+>>>>>>> b1a25d7ac8fdd30b4e81925a153c94528791709d
 
             // Construct new path from our base path
             strcpy(path, basePath);
             strcat(path, "/");
             strcat(path, dp->d_name);
+<<<<<<< HEAD
 	        pathfunResult = pathfun(path);
+=======
+	    pathfunResult = pathfun(path);
+>>>>>>> b1a25d7ac8fdd30b4e81925a153c94528791709d
             if (pathfunResult >= 0) {
                 sum += pathfunResult + depthfirstapply(path, sizepathfun);
             }
