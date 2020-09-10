@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "depthfirstapply.h"
 #include "sizepathfun.h"
 
@@ -76,29 +77,43 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	int total = 0;
-	int grandTotal = 0;
+	double total = 0;
+	double grandTotal = 0;
 	int i;
 	int j = 1;
+	char * unit = "blocks";
+    	double ratio = 1;
+	if (bflag == 1){
+		unit = "bytes";
+		ratio = 512;
+	}
+	else if (mflag == 1){
+		unit = "megabytes";
+		ratio = 512. / 1048576;
+	}
+	else if (Bflag == 1){
+		sprintf(unit, "%d-byte units", Msize);
+		ratio = 512. / Msize;
+	}
 	if (optind < argc){
 		for (i = optind; i < argc; i++){
 			path = argv[i];
-			total = depthfirstapply(path, sizepathfun);
-			printf("\nSize of path %d: %d\n", j, total);
+			total = depthfirstapply(path, sizepathfun) * ratio;
+			printf("\nSize of path %d: %.2f %s\n", j, total, unit);
 			grandTotal += total;
 			j++;
 		}
 	}
 	else {
 		path = ".";
-		grandTotal = total = depthfirstapply(path, sizepathfun);
+		grandTotal = total = depthfirstapply(path, sizepathfun) * ratio;
 		if (cflag == 1){
-			printf("\nSize of current directory: %d\n", total);
+			printf("\nSize of current directory: %.2f %s\n", total, unit);
 		}
 	}
 
 	if (cflag == 1){
-		printf("Grand total memory usage: %d", grandTotal);
+		printf("Grand total memory usage: %d %s", grandTotal, unit);
 	}
 
 	return 0;
