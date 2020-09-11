@@ -1,27 +1,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
-<<<<<<< HEAD
 #include <string.h>
-#include "depthfirstapply.h"
-#include "sizepathfun.h"
-
-int aflag, sflag;
-char unit[100] = { };
-double ratio;
-
-int main(int argc, char *argv[]) {
-	int opt, i, j;
-	int Bflag, Msize, bflag, cflag, dflag;
-	int Hflag, Lflag, mflag, Nlevels, hflag;
-	double total, grandTotal;
-
-	strcat(unit, "blocks");
-	ratio = 1;
-	total = grandTotal = 0;
-	aflag = Bflag = Msize = bflag = Hflag = Lflag = 0;
-	cflag = dflag = Nlevels = hflag = mflag = sflag = 0;
-=======
 #include "depthfirstapply.h"
 #include "sizepathfun.h"
 
@@ -37,16 +17,12 @@ int main(int argc, char *argv[]) {
 	aflag = Bflag = Msize = bflag = 0;
 	cflag = dflag = Nlevels = hflag = 0;
 	Hflag = Lflag = mflag = sflag = 0;
->>>>>>> 1daada6b00b05e4d982addcac82eb8c2de8f50c0
 
 	while ((opt = getopt(argc, argv, "aB:bcd:hHLms")) != -1) {
 		switch (opt) {
 		case 'a':
 			aflag = 1;
-<<<<<<< HEAD
-=======
 			printf("a");
->>>>>>> 1daada6b00b05e4d982addcac82eb8c2de8f50c0
 			break;
 		case 'B':
 			Bflag = 1;
@@ -56,17 +32,11 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'b':
 			bflag = 1;
-<<<<<<< HEAD
-			break;
-		case 'c':
-			cflag = 1;
-=======
 			printf("b");
 			break;
 		case 'c':
 			cflag = 1;
 			printf("c");
->>>>>>> 1daada6b00b05e4d982addcac82eb8c2de8f50c0
 			break;
 		case 'd':
 			dflag = 1;
@@ -98,76 +68,52 @@ int main(int argc, char *argv[]) {
 			break;
 		case 'm':
 			mflag = 1;
-<<<<<<< HEAD
-			break;
-		case 's':
-			sflag = 1;
-=======
 			printf("m");
 			break;
 		case 's':
 			sflag = 1;
 			printf("s");
->>>>>>> 1daada6b00b05e4d982addcac82eb8c2de8f50c0
 			break;
 		}
 	}
 
-<<<<<<< HEAD
+	double total = 0;
+	double grandTotal = 0;
+	int i;
+	int j = 1;
+	char * unit = "blocks";
+    	double ratio = 1;
 	if (bflag == 1){
-		strcpy(unit, "");
-		strcat(unit, "bytes");
+		unit = "bytes";
 		ratio = 512;
 	}
 	else if (mflag == 1){
-		strcpy(unit, "");
-		strcat(unit, "megabytes");
+		unit = "megabytes";
 		ratio = 512. / 1048576;
 	}
 	else if (Bflag == 1){
 		sprintf(unit, "%d-byte units", Msize);
 		ratio = 512. / Msize;
 	}
-
-	j = 1;
-	if (optind < argc){
-		for (i = optind; i < argc; i++){
-			total = depthfirstapply(argv[i], sizepathfun) * ratio;
-			printf("\nSize of path %d: %.2f %s\n", j, total, unit);
-=======
-	int total = 0;
-	int grandTotal = 0;
-	int i;
-	int j = 1;
 	if (optind < argc){
 		for (i = optind; i < argc; i++){
 			path = argv[i];
-			total = depthfirstapply(path, sizepathfun);
-			printf("\nSize of path %d: %d\n", j, total);
->>>>>>> 1daada6b00b05e4d982addcac82eb8c2de8f50c0
+			total = depthfirstapply(path, sizepathfun) * ratio;
+			printf("\nSize of path %d: %.2f %s\n", j, total, unit);
 			grandTotal += total;
 			j++;
 		}
 	}
 	else {
-<<<<<<< HEAD
-		grandTotal = total = depthfirstapply(".", sizepathfun) * ratio;
-		printf("\nSize of current directory: %.2f %s\n", total, unit);
-	}
-
-	if (cflag == 1){
-		printf("Grand total memory usage: %d %s", grandTotal, unit);
-=======
 		path = ".";
-		grandTotal = total = depthfirstapply(path, sizepathfun);
+		grandTotal = total = depthfirstapply(path, sizepathfun) * ratio;
 		if (cflag == 1){
-			printf("\nSize of current directory: %d\n", total);
+			printf("\nSize of current directory: %.2f %s\n", total, unit);
 		}
 	}
 
 	if (cflag == 1){
-		printf("Grand total memory usage: %d", grandTotal);
->>>>>>> 1daada6b00b05e4d982addcac82eb8c2de8f50c0
+		printf("Grand total memory usage: %d %s", grandTotal, unit);
 	}
 
 	return 0;
