@@ -1,8 +1,11 @@
+// Author: Adam Wilson
+// Date: 9/14/2020
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <errno.h>
+#include <stdlib.h>
 #include "sizepathfun.h"
 #include "globals.h"
 
@@ -18,23 +21,36 @@ int sizepathfun(char* path) {
         // if -L is selected, symbolic links are dereferenced, returning the size
         // of what the symbolic link is pointing to
         if (globals.Lflag) {
-            stat(path, &statbuf);
-            return statbuf.st_size;
+            // if stat() call fails, calls perror and exits program
+            if (stat(path, &statbuf) == -1) {
+                perror("Error ");
+                exit(-1);
+            }
+            else return statbuf.st_size;
         }
         // otherwise, symbolic links are not dereferenced (size is that of the link itself) 
         else {
-            lstat(path, &statbuf);
-            return statbuf.st_size;
+            if (lstat(path, &statbuf) == -1) {
+                perror("Error ");
+                exit(-1);
+            }
+            else return statbuf.st_size;
         }
     }
 
     // otherwise, size is returned in units of 512-byte blocks, accounting for -L option
     if (globals.Lflag) {
-        stat(path, &statbuf);
-        return statbuf.st_blocks;
+        if (stat(path, &statbuf) == -1) {
+            perror("Error ");
+            exit(-1);
+        }
+        else return statbuf.st_blocks;
     }
     else {
-        lstat(path, &statbuf);
-        return statbuf.st_blocks;
+        if (lstat(path, &statbuf) == -1) {
+            perror("Error ");
+            exit(-1);
+        }
+        else return statbuf.st_blocks;
     }
 }

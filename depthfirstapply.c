@@ -1,3 +1,5 @@
+// Author: Adam Wilson
+// Date: 9/14/2020
 // References: https://codeforwin.org/2018/03/c-program-to-list-all-files-in-a-directory-recursively.html#:~:text=Open%20directory%20stream%20using%20opendir,%2C%20using%20dp%2D%3Ename%20.
 
 #include <stdio.h>

@@ -1,3 +1,6 @@
+// Author: Adam Wilson
+// Date: 9/14/2020
+
 #ifndef DEPTHFIRSTAPPLY_H
 #define DEPTHFIRSTAPPLY_H
 

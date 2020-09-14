@@ -1,3 +1,6 @@
+// Author: Adam Wilson
+// Date: 9/14/2020
+
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
