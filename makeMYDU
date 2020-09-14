@@ -1,15 +1,15 @@
 CC = gcc
-CFLAGS = -g
+CFLAGS = -c -g
 TARGET = mydu
 OBJS = mydu.o depthfirstapply.o sizepathfun.o
 $(TARGET): $(OBJS)
 	$(CC) -o $(TARGET) $(OBJS)
 mydu.o: mydu.c
-	$(CC) $(CFLAGS) -c mydu.c
+	$(CC) $(CFLAGS) mydu.c
 depthfirstapply.o: depthfirstapply.c
-	$(CC) $(CFLAGS) -c depthfirstapply.c
+	$(CC) $(CFLAGS) depthfirstapply.c
 sizepathfun.o: sizepathfun.c
-	$(CC) $(CFLAGS) -c sizepathfun.c
+	$(CC) $(CFLAGS) sizepathfun.c
 clean:
 	/bin/rm -f *.o $(TARGET)
 
