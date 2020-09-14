@@ -21,6 +21,10 @@ Hierarchy of Command Line Options
 -s > -d N > -a
 
 
+Version Control
+	Git was used for version control. The full commit history can be viewed at http://github.com/adwzq4/OS-Project-1/commits/master
+
+
 MIT License
 
 Copyright (c) 2020 Adam Wilson
