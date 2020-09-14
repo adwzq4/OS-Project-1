@@ -1,3 +1,4 @@
+
 mydu
 	mydu is a modified implementation of the du command, returning the sizes of directories indicated by the command line, or the current directory if no path is indicated, as well as the sizes of subdirectories
 
@@ -13,6 +14,11 @@ Usage
 ./mydu .. pathName    // prints sizes of parent directory and its subdirectories, then prints sizes of directory/file indicated by pathName, and of any subdirectories 
 ./mydu -h    // prints description of mydu, including all possible options
 
+
+Hierarchy of Command Line Options
+	If conflicting command line options are selected, they will be overridden as follows:
+-H > -B M > -m > -b
+-s > -d N > -a
 
 
 MIT License
