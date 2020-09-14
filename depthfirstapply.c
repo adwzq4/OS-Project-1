@@ -16,7 +16,6 @@
 // declares global Globals struct containing global variables
 extern struct Globals globals;
 
-
 // lists all files and sub-directories recursively, using basePath as root
 int depthfirstapply(char *basePath, int_func_int pathfun) {
     char path[1000];
@@ -39,6 +38,16 @@ int depthfirstapply(char *basePath, int_func_int pathfun) {
         currentLevel = globals.initialLevel * -1;
         for (k = 0; basePath[k]; k++)
             currentLevel += (basePath[k] == '/');
+    }
+
+    // if -L not set, and basePath is a symbolic link, returns the size of that link without traversing the directory or file
+    // to which it links
+    if (!(globals.Lflag)) {
+        struct stat sb;
+        lstat(basePath, &sb);
+        if (S_ISLNK(sb.st_mode)) {
+            return pathfun(basePath);;
+        }
     }
 
     // reads through directory stream
@@ -65,16 +74,7 @@ int depthfirstapply(char *basePath, int_func_int pathfun) {
                 
             }
 
-            //if (!(globals.Lflag)){
-            //    struct stat sb;
-            //    stat(path, &sb);
-            //    if (S_ISLNK(sb.st_mode)) {
-            //        subtotal += pathfun(path);
-            //    }
-            //    else subtotal += pathfun(path) + depthfirstapply(path, sizepathfun);
-            //}
-            
-            // recursively sums the size of each directory entry
+            // recursively sums the size of the subtree rooted at path
             subtotal += pathfun(path) + depthfirstapply(path, sizepathfun);
         }
     }

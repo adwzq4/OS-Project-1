@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <dirent.h>
 #include "depthfirstapply.h"
 #include "sizepathfun.h"
 #include "globals.h"
@@ -45,8 +46,9 @@ int main(int argc, char *argv[]) {
 			globals.Nlevels = atoi(optarg);
 			break;
 		case 'h':
-			printf("Displays the sizes of all files/directories in the tree whose root is specified\
-			\nin the command line.\n\n\
+			printf("\n\n\n---   mydu Help Page   ---\n\n\
+			mydu displays the sizes of all files/directories in the tree whose root is specified in the command line.\n\n\
+			Options:\n\
 			-a Writes count for all files, not just directories.\n\
 			-B M Scales sizes by M before printing; for example, -BM prints size in units of 1,048,576 bytes.\n\
 			-b Prints size in bytes.\n\
@@ -56,7 +58,7 @@ int main(int argc, char *argv[]) {
 			-H Prints size in human readable format, for example, 1.1KB, 234.7MB, 2.5GB.\n\
 			-L Dereferences all symbolic links. By default, symbolic links are not dereferenced.\n\
 			-m Equivalent to -B 1048576.\n\
-			-s Displays only a total for each command line argument.");
+			-s Displays only a total for each command line argument.\n\n");
 			exit(0);
 		case 'H':
 			globals.Hflag = 1;
@@ -97,17 +99,25 @@ int main(int argc, char *argv[]) {
 					globals.initialLevel += (argv[i][k] == '/');
 				}
 			}
-			total = depthfirstapply(argv[i], sizepathfun);
 
-			// if -H is true, prints total size in human readable format
-			if (globals.Hflag) {
-				printf("\nSize of path %d: %s\n", j, humanReadable(total, buff));
+			// calls perror if unable to open directory indicated by argv[i]
+			if (opendir(argv[i]) == NULL) {
+				perror("mydu: Error");
 			}
-			// otherwise prints size in blocks, or in units according to [-b | -B M | -m] options
+
 			else {
-				printf("\nSize of path %d: %.2f %s\n", j, total * globals.ratio, globals.unit);
+				total = depthfirstapply(argv[i], sizepathfun);
+
+				// if -H is true, prints total size in human readable format
+				if (globals.Hflag) {
+					printf("\nSize of path %d: %s\n\n", j, humanReadable(total, buff));
+				}
+				// otherwise prints size in blocks, or in units according to [-b | -B M | -m] options
+				else {
+					printf("\nSize of path %d: %.2f %s\n\n", j, total * globals.ratio, globals.unit);
+				}
+				grandTotal += total;
 			}
-			grandTotal += total;
 		}
 	}
 
@@ -115,20 +125,20 @@ int main(int argc, char *argv[]) {
 	else {
 		grandTotal = total = depthfirstapply(".", sizepathfun);
 		if (globals.Hflag) {
-			printf("\nSize of current directory: %s\n", humanReadable(total, buff));
+			printf("\nSize of current directory: %s\n\n", humanReadable(total, buff));
 		}
 		else {
-			printf("\nSize of current directory: %.2f %s\n", total * globals.ratio, globals.unit);
+			printf("\nSize of current directory: %.2f %s\n\n", total * globals.ratio, globals.unit);
 		}
 	}
 
 	// if -c is invoked, prints grand total size of all paths given as command line arguments
 	if (cflag){
 		if (globals.Hflag) {
-			printf("\nGrand total memory usage: %s\n", humanReadable(grandTotal, buff));
+			printf("\nGrand total memory usage: %s\n\n", humanReadable(grandTotal, buff));
 		}
 		else {
-			printf("\nGrand total memory usage: %.2f %s\n", grandTotal * globals.ratio, globals.unit);
+			printf("\nGrand total memory usage: %.2f %s\n\n", grandTotal * globals.ratio, globals.unit);
 		}
 	}
 

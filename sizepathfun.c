@@ -23,7 +23,7 @@ int sizepathfun(char* path) {
         if (globals.Lflag) {
             // if stat() call fails, calls perror and exits program
             if (stat(path, &statbuf) == -1) {
-                perror("Error ");
+                perror("mydu: Error");
                 exit(-1);
             }
             else return statbuf.st_size;
@@ -31,7 +31,7 @@ int sizepathfun(char* path) {
         // otherwise, symbolic links are not dereferenced (size is that of the link itself) 
         else {
             if (lstat(path, &statbuf) == -1) {
-                perror("Error ");
+                perror("mydu: Error");
                 exit(-1);
             }
             else return statbuf.st_size;
@@ -41,14 +41,14 @@ int sizepathfun(char* path) {
     // otherwise, size is returned in units of 512-byte blocks, accounting for -L option
     if (globals.Lflag) {
         if (stat(path, &statbuf) == -1) {
-            perror("Error ");
+            perror("mydu: Error");
             exit(-1);
         }
         else return statbuf.st_blocks;
     }
     else {
         if (lstat(path, &statbuf) == -1) {
-            perror("Error ");
+            perror("mydu: Error");
             exit(-1);
         }
         else return statbuf.st_blocks;
